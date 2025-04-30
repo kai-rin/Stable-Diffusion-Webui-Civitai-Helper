@@ -101,7 +101,7 @@ def get_custom_model_folder():
     if shared.cmd_opts.embeddings_dir and os.path.isdir(shared.cmd_opts.embeddings_dir):
         folders["ti"] = shared.cmd_opts.embeddings_dir
 
-    if shared.cmd_opts.hypernetwork_dir and os.path.isdir(shared.cmd_opts.hypernetwork_dir):
+    if hasattr(shared.cmd_opts, "hypernetwork_dir") and shared.cmd_opts.hypernetwork_dir and os.path.isdir(shared.cmd_opts.hypernetwork_dir):
         folders["hyper"] = shared.cmd_opts.hypernetwork_dir
 
     if shared.cmd_opts.ckpt_dir and os.path.isdir(shared.cmd_opts.ckpt_dir):
