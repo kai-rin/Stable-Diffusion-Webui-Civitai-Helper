@@ -104,14 +104,24 @@ def get_custom_model_folder():
     if hasattr(shared.cmd_opts, "hypernetwork_dir") and shared.cmd_opts.hypernetwork_dir and os.path.isdir(shared.cmd_opts.hypernetwork_dir):
         folders["hyper"] = shared.cmd_opts.hypernetwork_dir
 
-    if shared.cmd_opts.ckpt_dir and os.path.isdir(shared.cmd_opts.ckpt_dir):
-        folders["ckp"] = shared.cmd_opts.ckpt_dir
+    # Forge Classic uses ckpt_dirs/lora_dirs/vae_dirs (list, plural) instead of ckpt_dir/lora_dir/vae_dir
+    ckpt_dirs = getattr(shared.cmd_opts, "ckpt_dirs", None) or [getattr(shared.cmd_opts, "ckpt_dir", None)]
+    for d in ckpt_dirs:
+        if d and os.path.isdir(d):
+            folders["ckp"] = d
+            break
 
-    if shared.cmd_opts.lora_dir and os.path.isdir(shared.cmd_opts.lora_dir):
-        folders["lora"] = shared.cmd_opts.lora_dir
+    lora_dirs = getattr(shared.cmd_opts, "lora_dirs", None) or [getattr(shared.cmd_opts, "lora_dir", None)]
+    for d in lora_dirs:
+        if d and os.path.isdir(d):
+            folders["lora"] = d
+            break
 
-    if shared.cmd_opts.vae_dir and os.path.isdir(shared.cmd_opts.vae_dir):
-        folders["vae"] = shared.cmd_opts.vae_dir
+    vae_dirs = getattr(shared.cmd_opts, "vae_dirs", None) or [getattr(shared.cmd_opts, "vae_dir", None)]
+    for d in vae_dirs:
+        if d and os.path.isdir(d):
+            folders["vae"] = d
+            break
 
     if util.get_opts("ch_dl_lyco_to_lora"):
         folders["lycoris"] = folders["lora"]
